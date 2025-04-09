@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models.signals import post_save
 from .models import User, Role, Organization
 
 
@@ -36,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(
             role=role, organization=organization, **validated_data
         )
+        post_save.send(sender=User, instance=user, created=True)
         return user
 
     def update(self, instance, validated_data):

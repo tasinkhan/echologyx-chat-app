@@ -7,10 +7,14 @@ from .tasks import send_email_async
 
 @receiver(post_save, sender=User)
 def send_welcome_email(sender, instance, created, **kwargs):
+    print("-----------")
     if created:
         subject = "Welcome to Our Platform!"
         message = f"Hello {instance.username},\n\nThank you for registering."
         recipient_list = [instance.email]
+
+        print("User created")
+        print("Preparing mail")
         
         # Call the Celery task to send the email asynchronously
         send_email_async.delay(subject, message, recipient_list)

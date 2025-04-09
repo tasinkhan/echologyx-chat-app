@@ -20,7 +20,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('chat.urls')),  # Add your app's URL routing here
+    path("admin/", admin.site.urls),
+    path("user/", include("user_app.urls")),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-schema'),  # Swagger UI
 ]

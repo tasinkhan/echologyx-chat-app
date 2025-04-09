@@ -22,20 +22,12 @@ services:
     ports:
       - "6379:6379"
 
-  # # Celery worker
-  # celery:
-  #   build: .
-  #   command: ["celery", "-A", "your_project_name", "worker", "--loglevel=info"]  # replace 'your_project_name' with your actual project name
-  #   depends_on:
-  #     - redis
-  #   volumes:
-  #     - .:/app
+  # Celery worker
+  celery:
+    build: .
+    command: ["celery", "-A", "django_chat", "worker", "--loglevel=info"]
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
 
-  # # Celery beat (for periodic tasks)
-  # celerybeat:
-  #   build: .
-  #   command: ["celery", "-A", "your_project_name", "beat", "--loglevel=info"]  # replace 'your_project_name' with your actual project name
-  #   depends_on:
-  #     - redis
-  #   volumes:
-  #     - .:/app

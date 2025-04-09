@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # Django application
+  web:
+    build: .
+    command: ["daphne", "django_chat.asgi:application", "--bind", "0.0.0.0", "--port", "8000"]
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    environment:
+      - DEBUG=True
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=django_chat.settings
+
+  # Redis for channel layer and Celery
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  # # Celery worker
+  # celery:
+  #   build: .
+  #   command: ["celery", "-A", "your_project_name", "worker", "--loglevel=info"]  # replace 'your_project_name' with your actual project name
+  #   depends_on:
+  #     - redis
+  #   volumes:
+  #     - .:/app
+
+  # # Celery beat (for periodic tasks)
+  # celerybeat:
+  #   build: .
+  #   command: ["celery", "-A", "your_project_name", "beat", "--loglevel=info"]  # replace 'your_project_name' with your actual project name
+  #   depends_on:
+  #     - redis
+  #   volumes:
+  #     - .:/app

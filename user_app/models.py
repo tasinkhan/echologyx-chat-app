@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+
 class Organization(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=255, null=True)
@@ -25,16 +26,18 @@ class Role(models.Model):
 
 class User(AbstractUser):
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True)
+    organization = models.ForeignKey(
+        Organization, on_delete=models.SET_NULL, null=True, blank=True
+    )
     groups = models.ManyToManyField(
-        'auth.Group', 
-        related_name='user_set_custom',  # Change the reverse relation name
-        blank=True
+        "auth.Group",
+        related_name="user_set_custom",  # Change the reverse relation name
+        blank=True,
     )
     user_permissions = models.ManyToManyField(
-        'auth.Permission', 
-        related_name='user_permissions_custom',  # Change the reverse relation name
-        blank=True
+        "auth.Permission",
+        related_name="user_permissions_custom",  # Change the reverse relation name
+        blank=True,
     )
 
     def __str__(self):
